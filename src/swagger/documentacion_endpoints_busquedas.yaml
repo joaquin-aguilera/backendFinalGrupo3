@@ -1,0 +1,509 @@
+openapi: 3.0.0
+info:
+  title: API de Búsqueda y Descubrimiento - Pulga Shop
+  version: 1.0.0
+  description: |
+    ## Grupo 3 - Microservicio de Búsqueda y Descubrimiento
+
+    **Funcionalidades principales:**
+    - Búsqueda avanzada con filtros (texto, precio, categoría, condición)
+    - Historial de búsquedas por usuario
+    - Registro de clicks para analítica
+    - Sugerencias de búsqueda desde historial
+    - Categorías con imágenes optimizadas
+
+    ---
+    
+    ## 🔗 Integraciones
+
+    ### Consumimos (APIs externas):
+    - **Grupo 2 (Publicaciones):** `GET /api/publicaciones` - Productos a mostrar
+    - **Grupo 4 (Autenticación):** `GET /api/auth/me` - Validar tokens JWT
+
+    ### Exponemos (Para otros grupos):
+    - **Grupo 1 (Analítica):** `/api/analytics/searches` y `/api/analytics/clicks`
+    
+    ### Redireccionamos:
+    - **Grupo 2 (Publicaciones):** Click en producto → `http://localhost:4040/publicaciones/{id}`
+
+  contact:
+    name: Max Latuz
+    email: max.latuz@estudiantes.uv.cl
+
+servers:
+  - url: http://localhost:5610
+    description: Backend Búsqueda (Grupo 3)
+
+tags:
+  - name: "🔍 Búsqueda"
+    description: Endpoints principales de búsqueda de productos
+  - name: "📜 Historial"
+    description: Gestión del historial de búsquedas del usuario
+  - name: "📁 Categorías"
+    description: Listado de categorías y sus productos
+  - name: "📊 Analytics - Grupo 1"
+    description: |
+      **ENDPOINTS PARA GRUPO 1 (Reportes y Analítica)**
+      
+      Datos en bruto para análisis externo
+  - name: "📈 Analytics - Interno"
+    description: Estadísticas y métricas internas
+  - name: "🖼️ Imágenes"
+    description: Servicio de imágenes optimizadas
+
+paths:
+  # ============================================
+  # ENDPOINTS PARA GRUPO 1 (ANALÍTICA)
+  # ============================================
+  
+  /api/analytics/searches:
+    get:
+      summary: Obtener todos los datos de búsquedas
+      description: |
+        **Para Grupo 1 - Reportes y Analítica**
+        
+        Retorna array plano con todos los registros de búsquedas realizadas.
+      tags: ["📊 Analytics - Grupo 1"]
+      responses:
+        '200':
+          description: Array de búsquedas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    valor_busqueda:
+                      type: string
+                      example: "laptop gaming"
+                    fecha:
+                      type: string
+                      format: date-time
+                      example: "2025-01-15T10:30:00.000Z"
+
+  /api/analytics/clicks:
+    get:
+      summary: Obtener todos los datos de clicks
+      description: |
+        **Para Grupo 1 - Reportes y Analítica**
+        
+        Retorna array plano con todos los registros de clicks en productos.
+      tags: ["📊 Analytics - Grupo 1"]
+      responses:
+        '200':
+          description: Array de clicks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id_producto:
+                      type: string
+                      example: "pub_67890"
+                    nombre:
+                      type: string
+                      example: "Laptop HP Pavilion"
+                    fecha:
+                      type: string
+                      format: date-time
+                      example: "2025-01-15T10:32:15.000Z"
+
+  # ============================================
+  # ENDPOINTS DE BÚSQUEDA
+  # ============================================
+  
+  /api/search/products:
+    get:
+      summary: Buscar productos con filtros
+      description: |
+        Búsqueda de productos con filtros avanzados.
+        Los productos se obtienen del Grupo 2 (Publicaciones).
+      tags: ["🔍 Búsqueda"]
+      parameters:
+        - name: busqueda
+          in: query
+          schema:
+            type: string
+          description: Texto de búsqueda
+          example: "laptop"
+        - name: precio
+          in: query
+          schema:
+            type: string
+            enum: 
+              - "hasta 5000"
+              - "5000-10000"
+              - "10000-25000"
+              - "25000-50000"
+              - "50000-100000"
+              - "100000-300000"
+              - "300000-500000"
+              - "mas de 500000"
+          description: Rango de precios en CLP
+        - name: categoria
+          in: query
+          schema:
+            type: string
+            enum: [ELECTRÓNICA, ROPA, CALZADO, HOGAR, JUGUETES, DEPORTES, LIBROS, ALIMENTOS, BELLEZA, OFICINA, AUTOMOTRIZ, MASCOTAS, GENERAL]
+          description: Categoría del producto
+        - name: condicion
+          in: query
+          schema:
+            type: string
+            enum: [NUEVO, USADO, REACONDICIONADO]
+          description: Condición del producto
+        - name: ordenar
+          in: query
+          schema:
+            type: string
+            enum: [precio-asc, precio-desc]
+          description: Ordenamiento por precio
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+          description: Número de página
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            default: 20
+          description: Productos por página
+      responses:
+        '200':
+          description: Productos encontrados
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  productos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Producto'
+                  metadata:
+                    $ref: '#/components/schemas/PaginationMetadata'
+
+  /api/search/products/random:
+    get:
+      summary: Obtener productos aleatorios
+      description: Retorna productos seleccionados aleatoriamente (para "SORPRÉNDEME")
+      tags: ["🔍 Búsqueda"]
+      parameters:
+        - name: limite
+          in: query
+          schema:
+            type: integer
+            default: 20
+            maximum: 50
+          description: Cantidad de productos
+      responses:
+        '200':
+          description: Productos aleatorios
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  productos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Producto'
+                  metadata:
+                    type: object
+
+  /api/search/suggestions:
+    get:
+      summary: Obtener sugerencias de búsqueda
+      description: Sugerencias basadas en el historial del usuario
+      tags: ["🔍 Búsqueda"]
+      parameters:
+        - name: texto
+          in: query
+          schema:
+            type: string
+          description: Texto para filtrar sugerencias (opcional)
+      responses:
+        '200':
+          description: Lista de sugerencias
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sugerencia'
+
+  /api/search/click:
+    post:
+      summary: Registrar click en producto
+      description: Registra cuando un usuario hace click en un producto (para analítica)
+      tags: ["🔍 Búsqueda"]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [id_producto, nombre]
+              properties:
+                id_producto:
+                  type: string
+                  example: "pub_123"
+                nombre:
+                  type: string
+                  example: "Laptop HP Pavilion"
+      responses:
+        '200':
+          description: Click registrado
+
+  # ============================================
+  # ENDPOINTS DE HISTORIAL
+  # ============================================
+
+  /api/search/history:
+    get:
+      summary: Obtener historial de búsquedas
+      tags: ["📜 Historial"]
+      responses:
+        '200':
+          description: Historial del usuario
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HistorialBusqueda'
+
+  /api/search/history/{id}:
+    delete:
+      summary: Eliminar búsqueda del historial
+      tags: ["📜 Historial"]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID de la búsqueda a eliminar
+      responses:
+        '200':
+          description: Búsqueda eliminada
+
+  # ============================================
+  # ENDPOINTS DE CATEGORÍAS
+  # ============================================
+
+  /api/categories:
+    get:
+      summary: Obtener todas las categorías
+      tags: ["📁 Categorías"]
+      responses:
+        '200':
+          description: Lista de categorías
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+
+  /api/categories/{category}/products:
+    get:
+      summary: Obtener productos de una categoría
+      tags: ["📁 Categorías"]
+      parameters:
+        - name: category
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Nombre de la categoría
+          example: "ELECTRÓNICA"
+      responses:
+        '200':
+          description: Productos de la categoría
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  categoria:
+                    type: string
+                  total:
+                    type: integer
+                  productos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Producto'
+
+  # ============================================
+  # ENDPOINTS DE ANALYTICS INTERNO
+  # ============================================
+
+  /api/analytics/top-products:
+    get:
+      summary: Productos más clickeados
+      tags: ["📈 Analytics - Interno"]
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 6
+      responses:
+        '200':
+          description: Top productos
+
+  /api/analytics/stats:
+    get:
+      summary: Estadísticas generales
+      tags: ["📈 Analytics - Interno"]
+      responses:
+        '200':
+          description: Estadísticas de búsquedas
+
+  /api/analytics/top-terms:
+    get:
+      summary: Términos más buscados
+      tags: ["📈 Analytics - Interno"]
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: Top términos
+
+  /api/analytics/trends:
+    get:
+      summary: Tendencias de búsqueda
+      tags: ["📈 Analytics - Interno"]
+      parameters:
+        - name: days
+          in: query
+          schema:
+            type: integer
+            default: 7
+      responses:
+        '200':
+          description: Tendencias por período
+
+  # ============================================
+  # ENDPOINTS DE IMÁGENES
+  # ============================================
+
+  /api/images/categories/{imageName}:
+    get:
+      summary: Obtener imagen de categoría optimizada
+      tags: ["🖼️ Imágenes"]
+      parameters:
+        - name: imageName
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "Electronica.jpg"
+        - name: width
+          in: query
+          schema:
+            type: integer
+            default: 800
+        - name: height
+          in: query
+          schema:
+            type: integer
+            default: 600
+      responses:
+        '200':
+          description: Imagen optimizada
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+
+components:
+  schemas:
+    Producto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID de la publicación
+        id_producto:
+          type: string
+          description: ID del producto
+        titulo:
+          type: string
+        descripcion:
+          type: string
+        precio:
+          type: number
+        categoria:
+          type: string
+        condicion:
+          type: string
+        marca:
+          type: string
+        imagen:
+          type: string
+          description: URL de la primera imagen
+
+    PaginationMetadata:
+      type: object
+      properties:
+        total:
+          type: integer
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        totalPages:
+          type: integer
+        hasMore:
+          type: boolean
+
+    Sugerencia:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID para poder eliminar del historial
+        texto:
+          type: string
+        tipo:
+          type: string
+          enum: [historial, coincidencia]
+        filtros:
+          type: object
+
+    HistorialBusqueda:
+      type: object
+      properties:
+        _id:
+          type: string
+        queryText:
+          type: string
+        filters:
+          type: object
+        requestedAt:
+          type: string
+          format: date-time
+
+    Category:
+      type: object
+      properties:
+        nombre:
+          type: string
+          example: "ELECTRÓNICA"
+        imagen:
+          type: string
+          nullable: true
+        totalProductos:
+          type: integer

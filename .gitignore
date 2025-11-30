@@ -1,0 +1,58 @@
+# ================================================
+# .gitignore - Backend Búsqueda y Descubrimiento
+# Grupo 3 - Pulga Shop
+# ================================================
+
+# --- Dependencias ---
+node_modules/
+package-lock.json
+
+# --- Build ---
+dist/
+build/
+*.tsbuildinfo
+
+# --- Logs ---
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# --- Cache ---
+.cache/
+.npm/
+*.tgz
+
+# --- Imágenes generadas/cache ---
+public/images/cache/
+public/images/categories/*.webp
+!public/images/categories/.gitkeep
+
+# --- Testing ---
+coverage/
+.nyc_output/
+
+# --- IDE/Editor ---
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# --- Temporales ---
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# --- Docker (locales) ---
+docker-compose.override.yml

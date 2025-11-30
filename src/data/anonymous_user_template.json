@@ -1,0 +1,12 @@
+{
+  "id": "anonymous",
+  "nombre": "Usuario",
+  "apellido": "Anónimo",
+  "correo": "anonymous@session.temp",
+  "roles": ["invitado"],
+  "permisos": ["buscar_productos"],
+  "activo": true,
+  "creado_en": "2025-01-01T00:00:00.000Z",
+  "actualizado_en": "2025-01-01T00:00:00.000Z",
+  "_comentario": "PLANTILLA DE USUARIO ANÓNIMO - SE USA EN PRODUCCIÓN. Define la estructura base para usuarios sin autenticación. Su historial se guarda temporalmente asociado a su sessionId y se borra al cerrar la sesión."
+}

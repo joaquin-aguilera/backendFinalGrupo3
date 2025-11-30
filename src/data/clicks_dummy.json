@@ -1,0 +1,21 @@
+[
+  {"id_producto": "prod_001", "nombre": "Smartphone Samsung Galaxy A54", "fecha": "2025-11-25T10:30:00.000Z", "userId": "dummy_auth_user_001"},
+  {"id_producto": "prod_001", "nombre": "Smartphone Samsung Galaxy A54", "fecha": "2025-11-26T14:20:00.000Z", "userId": "anonymous_session_001"},
+  {"id_producto": "prod_001", "nombre": "Smartphone Samsung Galaxy A54", "fecha": "2025-11-27T09:15:00.000Z", "userId": "dummy_auth_user_001"},
+  {"id_producto": "prod_001", "nombre": "Smartphone Samsung Galaxy A54", "fecha": "2025-11-28T11:00:00.000Z", "userId": "anonymous_session_002"},
+  {"id_producto": "prod_001", "nombre": "Smartphone Samsung Galaxy A54", "fecha": "2025-11-29T08:45:00.000Z", "userId": "dummy_auth_user_002"},
+  {"id_producto": "prod_005", "nombre": "Consola PlayStation 5", "fecha": "2025-11-25T11:45:00.000Z", "userId": "dummy_auth_user_001"},
+  {"id_producto": "prod_005", "nombre": "Consola PlayStation 5", "fecha": "2025-11-26T16:30:00.000Z", "userId": "anonymous_session_002"},
+  {"id_producto": "prod_005", "nombre": "Consola PlayStation 5", "fecha": "2025-11-27T10:00:00.000Z", "userId": "dummy_auth_user_002"},
+  {"id_producto": "prod_005", "nombre": "Consola PlayStation 5", "fecha": "2025-11-28T14:30:00.000Z", "userId": "anonymous_session_001"},
+  {"id_producto": "prod_010", "nombre": "Zapatillas Nike Air Max 90", "fecha": "2025-11-25T09:00:00.000Z", "userId": "dummy_auth_user_001"},
+  {"id_producto": "prod_010", "nombre": "Zapatillas Nike Air Max 90", "fecha": "2025-11-26T12:15:00.000Z", "userId": "anonymous_session_003"},
+  {"id_producto": "prod_010", "nombre": "Zapatillas Nike Air Max 90", "fecha": "2025-11-27T17:45:00.000Z", "userId": "dummy_auth_user_002"},
+  {"id_producto": "prod_022", "nombre": "Bicicleta de Montaña Aro 29", "fecha": "2025-11-25T15:30:00.000Z", "userId": "anonymous_session_001"},
+  {"id_producto": "prod_022", "nombre": "Bicicleta de Montaña Aro 29", "fecha": "2025-11-26T09:45:00.000Z", "userId": "dummy_auth_user_001"},
+  {"id_producto": "prod_022", "nombre": "Bicicleta de Montaña Aro 29", "fecha": "2025-11-28T16:00:00.000Z", "userId": "anonymous_session_002"},
+  {"id_producto": "prod_033", "nombre": "Crema Facial Anti-edad La Mer", "fecha": "2025-11-25T14:00:00.000Z", "userId": "dummy_auth_user_002"},
+  {"id_producto": "prod_033", "nombre": "Crema Facial Anti-edad La Mer", "fecha": "2025-11-27T11:30:00.000Z", "userId": "anonymous_session_001"},
+  {"id_producto": "prod_041", "nombre": "Kit de Herramientas para Auto", "fecha": "2025-11-26T10:00:00.000Z", "userId": "dummy_auth_user_001"},
+  {"id_producto": "prod_041", "nombre": "Kit de Herramientas para Auto", "fecha": "2025-11-28T09:30:00.000Z", "userId": "anonymous_session_003"}
+]

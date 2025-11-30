@@ -1,0 +1,12 @@
+{
+  "id": "test_auth_user_001",
+  "nombre": "Usuario",
+  "apellido": "De Prueba",
+  "correo": "test.user@testing.com",
+  "roles": ["usuario", "comprador"],
+  "permisos": ["buscar_productos", "ver_historial", "realizar_compras"],
+  "activo": true,
+  "creado_en": "2025-01-01T00:00:00.000Z",
+  "actualizado_en": "2025-01-01T00:00:00.000Z",
+  "_comentario": "USUARIO DE PRUEBA - SOLO DESARROLLO. Se usa cuando USE_DUMMY_AUTH=true en .env y hay un token en el header. Simula un usuario autenticado para pruebas sin conexión al servicio de autenticación del Grupo 4."
+}

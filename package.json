@@ -1,0 +1,48 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/server.js",
+    "dev": "nodemon src/server.ts",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "docker:up": "docker-compose -f ../BD/docker-compose.yml up -d",
+    "docker:down": "docker-compose -f ../BD/docker-compose.yml down",
+    "images:generate": "ts-node src/scripts/pregenerate-images.ts",
+    "test:api": "ts-node src/scripts/test-publicaciones-api.ts",
+    "test:auth": "ts-node src/scripts/test-auth-integration.ts",
+    "seed:searches": "ts-node src/scripts/seed-popular-searches.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.8.1",
+    "axios": "^1.6.0",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.1",
+    "express-xss-sanitizer": "^2.0.1",
+    "helmet": "^8.1.0",
+    "hpp": "^0.2.3",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.0.0",
+    "sharp": "^0.34.5",
+    "typescript": "^5.9.3",
+    "validator": "^13.15.23"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/sharp": "^0.31.1",
+    "@types/validator": "^13.15.10",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2"
+  }
+}
